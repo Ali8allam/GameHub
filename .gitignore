@@ -5,6 +5,18 @@ __pycache__/
 
 # C extensions
 *.so
+# 1. Ignore everything in the repository
+*
+
+# 2. Prevent Git from ignoring directories (allows scanning subfolders)
+!*/
+
+# 3. Explicitly allow tracking .c and .h files
+!*.c
+!*.h
+
+# 4. Explicitly allow tracking the .gitignore file itself
+!.gitignore
 
 # Distribution / packaging
 .Python
