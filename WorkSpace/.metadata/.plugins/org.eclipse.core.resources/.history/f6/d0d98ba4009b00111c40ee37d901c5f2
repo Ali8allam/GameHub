@@ -1,0 +1,20 @@
+#include "../LIB/STD_TYPES.h"
+#include "../MCAL/RCC/RCC_int.h"
+#include "../../system\include\stm32f4-hal\stm32f4xx_hal.h"
+#include "../../system\include\stm32f4-hal\stm32f4xx_hal_gpio.h"
+
+
+int main()
+{
+	MRCC_vInit();
+	MRCC_vEnableCLK(0,0);
+	HAL_GPIO_Init();
+	while(1)
+	{
+
+	}
+
+	return 0;
+}
+
+

@@ -1,0 +1,48 @@
+13:19:02 **** Incremental Build of configuration Debug for project Drivers ****
+make all 
+Building file: ../src/APP/main.c
+Invoking: Cross ARM GNU C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -DDEBUG -DUSE_FULL_ASSERT -DTRACE -DOS_USE_TRACE_SEMIHOSTING_DEBUG -DSTM32F401xC -DUSE_HAL_DRIVER -DHSE_VALUE=16000000 -I"../include" -I"../system/include" -I"../system/include/cmsis" -I"../system/include/stm32f4-hal" -std=gnu11 -MMD -MP -MF"src/APP/main.d" -MT"src/APP/main.o" -c -o "src/APP/main.o" "../src/APP/main.c"
+../src/APP/main.c:11:1: warning: data definition has no type or storage class
+ arr1[] = {1,2,3,4,5,6,7,8,9,10};
+ ^~~~
+../src/APP/main.c:11:1: warning: type defaults to 'int' in declaration of 'arr1' [-Wimplicit-int]
+../src/APP/main.c:12:1: warning: data definition has no type or storage class
+ arr2[10] = {0};
+ ^~~~
+../src/APP/main.c:12:1: warning: type defaults to 'int' in declaration of 'arr2' [-Wimplicit-int]
+../src/APP/main.c: In function 'main':
+../src/APP/main.c:37:5: warning: implicit declaration of function 'MNVIC_vEnable_Peripheral_INT' [-Wimplicit-function-declaration]
+     MNVIC_vEnable_Peripheral_INT(56);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../src/APP/main.c:43:27: warning: passing argument 2 of 'MDMA2_vSetStreamCfg' from incompatible pointer type [-Wincompatible-pointer-types]
+     MDMA2_vSetStreamCfg(0,arr1,arr2,2,2,10,3);
+                           ^~~~
+In file included from ../src/APP/main.c:6:0:
+../src/APP/../MCAL/DMA/DMA_int.h:26:6: note: expected 'u32 * {aka long unsigned int *}' but argument is of type 'int *'
+ void MDMA2_vSetStreamCfg(
+      ^~~~~~~~~~~~~~~~~~~
+../src/APP/main.c:43:32: warning: passing argument 3 of 'MDMA2_vSetStreamCfg' from incompatible pointer type [-Wincompatible-pointer-types]
+     MDMA2_vSetStreamCfg(0,arr1,arr2,2,2,10,3);
+                                ^~~~
+In file included from ../src/APP/main.c:6:0:
+../src/APP/../MCAL/DMA/DMA_int.h:26:6: note: expected 'u32 * {aka long unsigned int *}' but argument is of type 'int *'
+ void MDMA2_vSetStreamCfg(
+      ^~~~~~~~~~~~~~~~~~~
+Finished building: ../src/APP/main.c
+ 
+Building target: Drivers.elf
+Invoking: Cross ARM GNU C++ Linker
+arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -T mem.ld -T libs.ld -T sections.ld -nostartfiles -Xlinker --gc-sections -L"../ldscripts" -Wl,-Map,"Drivers.map" --specs=nano.specs -o "Drivers.elf"  ./system/src/stm32f4-hal/stm32f4xx_hal.o ./system/src/stm32f4-hal/stm32f4xx_hal_cortex.o ./system/src/stm32f4-hal/stm32f4xx_hal_dfsdm.o ./system/src/stm32f4-hal/stm32f4xx_hal_flash.o ./system/src/stm32f4-hal/stm32f4xx_hal_gpio.o ./system/src/stm32f4-hal/stm32f4xx_hal_iwdg.o ./system/src/stm32f4-hal/stm32f4xx_hal_pwr.o ./system/src/stm32f4-hal/stm32f4xx_hal_rcc.o  ./system/src/newlib/_cxx.o ./system/src/newlib/_exit.o ./system/src/newlib/_sbrk.o ./system/src/newlib/_startup.o ./system/src/newlib/_syscalls.o ./system/src/newlib/assert.o  ./system/src/diag/Trace.o ./system/src/diag/trace_impl.o  ./system/src/cortexm/_initialize_hardware.o ./system/src/cortexm/_reset_hardware.o ./system/src/cortexm/exception_handlers.o  ./system/src/cmsis/system_stm32f4xx.o ./system/src/cmsis/vectors_stm32f401xc.o  ./src/RTOS/RTOS_prg.o  ./src/MCAL/USART/USART_prg.o  ./src/MCAL/SYSTICK/SYSTICK_prg.o  ./src/MCAL/SYSCFG/SYSCFG_prg.o  ./src/MCAL/SPI/SPI_prg.o  ./src/MCAL/RCC/RCC_prg.o  ./src/MCAL/NVIC/NVIC_prg.o  ./src/MCAL/GPIO/GPIO_prg.o  ./src/MCAL/EXTI/EXTI_prg.o  ./src/MCAL/DMA/DMA_prg.o  ./src/HAL/TFT/TFT_prg.o  ./src/HAL/SEVENSEGMENT/SEVENSEGMENT_prg.o  ./src/HAL/S2P/S2P_prg.o  ./src/HAL/LEDMATRIX/LEDMATRIX_prg.o  ./src/HAL/IR/IR_prg.o  ./src/HAL/DAC/DAC_prg.o  ./src/APP/main.o   
+Finished building target: Drivers.elf
+ 
+Invoking: Cross ARM GNU Create Flash Image
+arm-none-eabi-objcopy -O ihex "Drivers.elf"  "Drivers.hex"
+Finished building: Drivers.hex
+ 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "Drivers.elf"
+   text	   data	    bss	    dec	    hex	filename
+   6535	    200	    564	   7299	   1c83	Drivers.elf
+Finished building: Drivers.siz
+ 

@@ -1,0 +1,38 @@
+#include "../LIB/STD_TYPES.h"
+#include "../LIB/BIT_MATH.h"
+
+#include "../MCAL/GPIO/GPIO_int.h"
+#include "../MCAL/RCC/RCC_int.h"
+
+#include "../HAL/S2P/S2P_int.h"
+#include "../HAL/LEDMATRIX/LEDMATRIX_int.h"
+
+int main(void)
+{
+    /* 1. Initialize System Clocks (e.g., Enable GPIO Clock) */
+	MRCC_vEnableCLK(RCC_AHB1, GPIO_PORTA);
+
+    /* 2. Configure Shift Register (S2P) Pins */
+    S2P_Init_t S2P_Config = {
+        .DataPort     = GPIO_PORTA,
+        .DataPin      = GPIO_PIN0,
+        .ShiftCLKPort = GPIO_PORTA,
+        .ShiftCLKPin  = GPIO_PIN1,
+        .LatchCLKPort = GPIO_PORTA,
+        .LatchCLKPin  = GPIO_PIN2
+    };
+
+    /* 3. Initialize LED Matrix */
+    HLEDMATRIX_vInit(&S2P_Config);
+
+    /* 4. Define Frame Array for Letter 'A' */
+    u8 LetterA_Frame[8] = {0x7E, 0x11, 0x11, 0x11, 0x7E, 0x00, 0x00, 0x00};
+
+    while(1)
+    {
+        /* Display frame continuously (Delay parameter sets duration/refresh count) */
+        HLEDMATRIX_vDisplayFrame(LetterA_Frame, 50);
+    }
+
+    return 0;
+}

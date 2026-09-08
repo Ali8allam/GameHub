@@ -1,0 +1,23 @@
+#include "../../LIB/STD_TYPES.h"
+#include "../../LIB/BIT_MATH.h"
+
+#include "DMA_int.h"
+#include "DMA_prv.h"
+
+
+void MDMA2_vInit(u8 A_u8StreamID);
+
+void MDMA2_vSetStreamCfg(
+u8 A_u8StreamID,
+u32 *A_u32SourceAddr,
+u32 *A_u32DestAddr,
+Size_t A_xPSize,
+Size_t A_xMSize,
+u16 A_u16BlockSize,
+Threshold_t A_xThreshold
+
+);
+
+void MDMA2_vEnableStream(u8 A_u8StreamID);
+
+void MDMA2_vCallBack(u8 A_u8StreamID , void(*A_xFptr)(void));

@@ -1,0 +1,22 @@
+
+#include "../LIB/STD_TYPES.h"
+#include "../LIB/BIT_MATH.h"
+
+
+#include "../MCAL/GPIO/GPIO_int.h"
+#include "../MCAL/SYSTICK/SYSTICK_int.h"
+#include "../MCAL/SPI/SPI_int.h"
+
+#include "TFT_int.h"
+
+
+void HTFT_vInit(void)
+{
+
+}
+
+
+void HTFT_vShowImage(const u16 A_u16ImgArr[], u16 A_u16ImgSize)
+{
+
+}

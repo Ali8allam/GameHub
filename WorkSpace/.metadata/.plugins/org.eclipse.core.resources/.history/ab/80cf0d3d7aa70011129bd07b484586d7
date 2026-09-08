@@ -1,0 +1,104 @@
+
+#include "../LIB/STD_TYPES.h"
+#include "../LIB/BIT_MATH.h"
+
+
+#include "../MCAL/GPIO/GPIO_int.h"
+#include "../MCAL/SYSTICK/SYSTICK_int.h"
+#include "../MCAL/SPI/SPI_int.h"
+
+#include "TFT_int.h"
+
+GPIOx_PinConfig_t TFT_RST_PIN = {
+        .Port       = GPIO_PORTA,
+        .Pin        = GPIO_PIN0,
+        .Mode       = GPIO_MODE_OUTPUT,
+        .Speed      = GPIO_SPEED_LOW,
+        .OutputType = GPIO_OT_PUSHPULL,
+        .PullType   = GPIO_NO_PULL
+};
+
+
+GPIOx_PinConfig_t TFT_A0_PIN = {
+        .Port       = GPIO_PORTA,
+        .Pin        = GPIO_PIN1,
+        .Mode       = GPIO_MODE_OUTPUT,
+        .Speed      = GPIO_SPEED_LOW,
+        .OutputType = GPIO_OT_PUSHPULL,
+        .PullType   = GPIO_NO_PULL
+};
+
+
+static void Reset_Seq(void);
+static void Write_CMD(u8 A_u8CMD);
+static void Write_Data(u8 A_u8Data);
+
+static void Reset_Seq(void)
+{
+	MGPIO_vSetPinValue(TFT_RST_PIN.Port,TFT_RST_PIN.Pin,GPIO_HIGH);
+
+	MSYSTICK_vSetDelay_ms(100);
+
+	MGPIO_vSetPinValue(TFT_RST_PIN.Port,TFT_RST_PIN.Pin,GPIO_LOW);
+
+	MSYSTICK_vSetDelay_us(1);
+
+	MGPIO_vSetPinValue(TFT_RST_PIN.Port,TFT_RST_PIN.Pin,GPIO_HIGH);
+
+	MSYSTICK_vSetDelay_us(100);
+
+	MGPIO_vSetPinValue(TFT_RST_PIN.Port,TFT_RST_PIN.Pin,GPIO_LOW);
+
+	MSYSTICK_vSetDelay_us(100);
+
+	MGPIO_vSetPinValue(TFT_RST_PIN.Port,TFT_RST_PIN.Pin,GPIO_HIGH);
+
+	MSYSTICK_vSetDelay_ms(120);
+}
+
+static void Write_CMD(u8 A_u8CMD)
+{
+	MGPIO_vSetPinValue(TFT_A0_PIN.Port,TFT_A0_PIN.Pin,GPIO_LOW);
+	MSPI_vTransceive(A_u8CMD);
+
+
+}
+
+
+static void Write_Data(u8 A_u8Data)
+{
+	MGPIO_vSetPinValue(TFT_A0_PIN.Port,TFT_A0_PIN.Pin,GPIO_HIGH);
+	MSPI_vTransceive(A_u8Data);
+}
+
+void HTFT_vInit(void)
+{
+	MGPIO_vPinInit(&TFT_RST_PIN);
+	MGPIO_vPinInit(&TFT_A0_PIN);
+
+    MSYSTICK_Config_t STK_cfg = {
+        .InterruptEnable = INT_DISABLE,
+        .CLK_SRC = CLK_SRC_AHB_8
+    };
+    MSYSTICK_vInit(&STK_cfg);
+
+    MSPI_vInit();
+
+    Reset_Seq();
+
+    Write_CMD(0x11);
+
+    MSYSTICK_vSetDelay_ms(15);
+
+    Write_CMD(0x3A);
+
+
+
+}
+
+
+void HTFT_vShowImage(const u16 A_u16ImgArr[], u16 A_u16ImgSize)
+{
+
+}
+

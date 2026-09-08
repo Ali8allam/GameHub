@@ -1,0 +1,47 @@
+#include "../../LIB/STD_TYPES.h"
+#include "../../LIB/BIT_MATH.h"
+
+#include "DMA_int.h"
+#include "DMA_prv.h"
+
+
+void MDMA2_vInit(u8 A_u8StreamID)
+{	//stream disable
+	CLR_BIT(DMA2 -> Str[A_u8StreamID].CR,0);
+
+	//mem to mem
+	CLR_BIT(DMA2 -> Str[A_u8StreamID].CR,6);
+	SET_BIT(DMA2 -> Str[A_u8StreamID].CR,7);
+
+	// src /dst   inc
+	SET_BIT(DMA2 -> Str[A_u8StreamID].CR,9);
+	SET_BIT(DMA2 -> Str[A_u8StreamID].CR,10);
+
+	//INT en
+	SET_BIT(DMA2 -> Str[A_u8StreamID].CR,4);
+
+
+
+
+}
+
+
+void MDMA2_vSetStreamCfg(u8 A_u8StreamID,u32 *A_u32SourceAddr,u32 *A_u32DestAddr,Size_t A_xPSize,Size_t A_xMSize,u16 A_u16BlockSize,Threshold_t A_xThreshold)
+{
+
+}
+
+
+
+void MDMA2_vEnableStream(u8 A_u8StreamID)
+{
+
+}
+
+
+void MDMA2_vCallBack(u8 A_u8StreamID , void(*A_xFptr)(void))
+{
+
+}
+
+

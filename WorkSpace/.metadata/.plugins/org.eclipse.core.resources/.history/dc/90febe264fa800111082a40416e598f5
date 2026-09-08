@@ -1,0 +1,42 @@
+#include "../LIB/STD_TYPES.h"
+#include "../LIB/BIT_MATH.h"
+
+#include "../MCAL/RCC/RCC_int.h"
+#include "../MCAL/GPIO/GPIO_int.h"
+#include "../MCAL/SYSTICK/SYSTICK_int.h"
+
+#include "../HAL/S2P/S2P_int.h"
+#include "../HAL/LEDMATRIX/LEDMATRIX_int.h"
+
+int main(void)
+{
+    /* 1. Initialize RCC System Clock & Enable GPIO Clock */
+    MRCC_vInit();
+    MRCC_vEnableCLK(RCC_AHB1, GPIO_PORTA);
+
+    /* 2. Configure S2P Pins (Serial-to-Parallel / Shift Registers) */
+    S2P_Init_t S2P_Config = {
+        .DataPort  = GPIO_PORTA,
+        .DataPin   = GPIO_PIN0,
+        .ClockPort = GPIO_PORTA,
+        .ClockPin  = GPIO_PIN1,
+        .LatchPort = GPIO_PORTA,
+        .LatchPin  = GPIO_PIN2
+    };
+
+    /* 3. Initialize LED Matrix and SysTick Driver */
+    HLEDMATRIX_vInit(&S2P_Config);
+
+    /* 4. Define Character 'A' Frame Data */
+    u8 Character_A[8] = {
+        0xFC, 0x12, 0x11, 0x11, 0x11, 0x12, 0xFC, 0x00
+    };
+
+    while(1)
+    {
+        /* Display 'A' with continuous scan iterations */
+        HLEDMATRIX_vDisplayFrame(Character_A, 10);
+    }
+
+    return 0;
+}

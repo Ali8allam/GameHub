@@ -1,0 +1,18 @@
+/*
+ * TFT_int.h
+ *
+ *  Created on: Sep 3, 2026
+ *      Author: bigor
+ */
+
+#ifndef HAL_TFT_TFT_INT_H_
+#define HAL_TFT_TFT_INT_H_
+
+void HTFT_vInit(void);
+
+void HTFT_vShowImage(const u16 A_u16ImgArr[],u16 A_u16ImgSize);
+
+
+
+
+#endif /* HAL_TFT_TFT_INT_H_ */

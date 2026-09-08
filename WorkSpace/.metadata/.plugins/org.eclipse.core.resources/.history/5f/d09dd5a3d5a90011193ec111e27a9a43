@@ -1,0 +1,31 @@
+/*
+ * DMA_int.h
+ *
+ *  Created on: Sep 6, 2026
+ *      Author: bigor
+ */
+
+#ifndef MCAL_DMA_DMA_INT_H_
+#define MCAL_DMA_DMA_INT_H_
+
+typedef enum {
+	Byte	= 0,
+	HalfWord = 1,
+	Word	= 2,
+
+
+}Size_t;
+
+void MDMA2_vInit(u8 A_u8StreamID);
+
+void MDMA2_vSetStreamCfg(
+u8 A_u8StreamID,
+u32 *A_u32SourceAddr,
+u32 *A_u32DestAddr,
+
+
+);
+
+
+
+#endif /* MCAL_DMA_DMA_INT_H_ */

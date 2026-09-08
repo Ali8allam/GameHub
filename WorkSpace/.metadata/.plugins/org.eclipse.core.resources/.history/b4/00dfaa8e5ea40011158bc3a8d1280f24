@@ -1,0 +1,51 @@
+#include "../LIB/STD_TYPES.h"
+#include "../LIB/BIT_MATH.h"
+#include "../MCAL/RCC/RCC_int.h"
+#include "../MCAL/GPIO/GPIO_int.h"
+#include "../MCAL/NVIC/NVIC_int.h"
+#include "../MCAL/EXTI/EXTI_int.h"
+#include "../MCAL/SYSCFG/SYSCFG_int.h"
+
+
+
+int main(void)
+{
+
+    MRCC_vInit();
+    MRCC_vEnableCLK(RCC_AHB1, RCC_GPIOA);
+    MRCC_vEnableCLK(RCC_AHB1, RCC_GPIOB);
+    MRCC_vEnableCLK(RCC_APB2, 14);
+
+
+
+    GPIOx_PinConfig_t button =
+    {
+        .Port     = GPIO_PORTB,
+        .Pin      = GPIO_PIN0,
+        .Mode     = GPIO_MODE_INPUT,
+        .PullType = GPIO_PULL_UP
+    };
+
+
+    MGPIO_vPinInit(&button);
+
+
+    MSYSCFG_vSetEXTIPort(EXTI_LINE0, SYSCFG_PORTB);
+
+
+    MEXTI_vInit();
+    MEXTI_vEnableINT(EXTI_LINE0);
+    MEXTI_vSetTrigger(EXTI_LINE0, EXTI_FALLING_EDGE);
+    //MEXTI_vSetCallBack(, EXTI_LINE0);
+
+
+    MNVIC_vEnable_Peripheral_INT(6);
+
+    while(1)
+    {
+
+    }
+
+    return 0;
+}
+
