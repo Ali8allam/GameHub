@@ -11,7 +11,7 @@
 
 GPIOx_PinConfig_t TFT_RST_PIN = {
         .Port       = GPIO_PORTA,
-        .Pin        = GPIO_PIN0,
+        .Pin        = GPIO_PIN2,
         .Mode       = GPIO_MODE_OUTPUT,
         .Speed      = GPIO_SPEED_LOW,
         .OutputType = GPIO_OT_PUSHPULL,

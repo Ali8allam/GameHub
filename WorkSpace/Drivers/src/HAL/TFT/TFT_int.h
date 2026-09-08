@@ -22,4 +22,5 @@ void HTFT_vDrawChar(u16 A_u16X, u16 A_u16Y, char A_char, u16 A_u16Color, u16 A_u
 void HTFT_vDrawString(u16 A_u16X, u16 A_u16Y, const char* A_str, u16 A_u16Color, u16 A_u16BgColor);
 
 
+
 #endif /* HAL_TFT_TFT_INT_H_ */
