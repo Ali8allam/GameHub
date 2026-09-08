@@ -80,6 +80,7 @@ void MEXTI_vSetCallBack(void(*A_xFptr)(void), u8 A_u8LineNo)
 //ISR
 void EXTI0_IRQHandler(void)
 {
+	MEXTI_vClearPendingFlag(EXTI_LINE0);
 	if(G_Fptr[EXTI_LINE0] != NULL)
 	{
 	G_Fptr[EXTI_LINE0]();
