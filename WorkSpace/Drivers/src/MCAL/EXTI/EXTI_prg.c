@@ -77,6 +77,14 @@ void MEXTI_vSetCallBack(void(*A_xFptr)(void), u8 A_u8LineNo)
 			}
 }
 
+void MEXTI_vClearPendingFlag(u8 A_u8LineNo)
+{
+	if(A_u8LineNo < 16)
+	{
+		SET_BIT(EXTI->PR, A_u8LineNo);
+	}
+}
+
 //ISR
 void EXTI0_IRQHandler(void)
 {

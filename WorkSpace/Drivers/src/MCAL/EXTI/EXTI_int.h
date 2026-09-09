@@ -17,6 +17,8 @@ void MEXTI_vSetTrigger(u8 A_u8LineNo, u8 A_u8Trigger_t);
 void MEXTI_vSoftwareINT (u8 A_u8LineNo);
 void MEXTI_vSetCallBack(void(*A_xFptr)(void), u8 A_u8LineNo);
 
+void MEXTI_vClearPendingFlag(u8 A_u8LineNo);
+
 // Line number
 #define EXTI_LINE0	0
 #define EXTI_LINE1	1
