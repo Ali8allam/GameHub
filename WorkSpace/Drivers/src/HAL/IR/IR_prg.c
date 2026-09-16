@@ -61,11 +61,15 @@ static void HIR_vGetPulseTime(void)
     if (G_u8StartingFlag == 0)
     {
         G_u8StartingFlag = 1;
+        G_u8Counter = 0;
         MSYSTICK_vSetIntervalSingle(15, HIR_vDecodeBits);
     }
     else
     {
-        G_u32Arr[G_u8Counter++] = MSYSTICK_u32GetElapsedTime_SingleShot() / 3.125;
+        if (G_u8Counter < 50)
+        {
+            G_u32Arr[G_u8Counter++] = MSYSTICK_u32GetElapsedTime_SingleShot() / 3.125;
+        }
         MSYSTICK_vSetIntervalSingle(4, HIR_vDecodeBits);
     }
 }
@@ -74,20 +78,23 @@ static void HIR_vDecodeBits(void)
 {
     u8 Local_u8Temp = 0;
 
-    for (u8 i = 0; i < 8; i++)
+    if (G_u8Counter >= 25)
     {
-        if (G_u32Arr[17 + i] >= 1000 && G_u32Arr[17 + i] <= 1250)
+        for (u8 i = 0; i < 8; i++)
         {
-            CLR_BIT(Local_u8Temp, i);
+            if (G_u32Arr[17 + i] >= 900 && G_u32Arr[17 + i] <= 1400)
+            {
+                CLR_BIT(Local_u8Temp, i);
+            }
+            else if (G_u32Arr[17 + i] >= 1800 && G_u32Arr[17 + i] <= 2600)
+            {
+                SET_BIT(Local_u8Temp, i);
+            }
         }
-        else if (G_u32Arr[17 + i] >= 2000 && G_u32Arr[17 + i] <= 2450)
-        {
-            SET_BIT(Local_u8Temp, i);
-        }
-    }
 
-    G_u8DecodedValue = Local_u8Temp;
-    G_u8NewKeyReady  = 1;
+        G_u8DecodedValue = Local_u8Temp;
+        G_u8NewKeyReady  = 1;
+    }
 
     G_u8StartingFlag = 0;
     G_u8Counter      = 0;
