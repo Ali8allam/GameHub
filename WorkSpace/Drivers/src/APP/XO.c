@@ -15,6 +15,9 @@
 #define ST7735_MAGENTA   0xF81F
 #define ST7735_DARKGRAY  0x39E7
 
+extern void System_vAddXOWin(void);
+extern void System_vAddXOLoss(void);
+
 static char Board[3][3];
 static u8 CursorX = 0, CursorY = 0;
 static char CurrentPlayer = 'X';
@@ -205,9 +208,15 @@ static void CheckWin(void)
         GameActive = 0;
         HTFT_vDrawRect(10, 5, 108, 18, ST7735_BLACK);
         if (win == 'X')
+        {
             HTFT_vDrawString(20, 10, "PLAYER X WINS!", ST7735_GREEN, ST7735_BLACK);
+            System_vAddXOWin(); /* <--- SAVE WIN */
+        }
         else
+        {
             HTFT_vDrawString(20, 10, "PLAYER O WINS!", ST7735_GREEN, ST7735_BLACK);
+            System_vAddXOLoss(); /* <--- SAVE LOSS */
+        }
         return;
     }
 

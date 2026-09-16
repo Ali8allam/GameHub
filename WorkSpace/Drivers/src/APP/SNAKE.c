@@ -7,6 +7,8 @@
 
 #include "SNAKE_int.h"
 
+
+
 #define ST7735_BLACK   0x0000
 #define ST7735_WHITE   0xFFFF
 #define ST7735_GREEN   0x07E0
@@ -21,6 +23,8 @@
 #define OFFSET_Y       30
 
 #define MAX_SNAKE_LEN  100
+
+extern void System_vUpdateSnakeScore(u16 A_u16Score);
 
 typedef enum {
     DIR_UP,
@@ -139,6 +143,7 @@ u8 HSNAKE_u8Update(u8 A_u8Key)
     {
         GameOver = 1;
         HTFT_vDrawString(22, 140, "GAME OVER!", ST7735_RED, ST7735_BLACK);
+        System_vUpdateSnakeScore(Score);
         return SNAKE_STATE_CONTINUE;
     }
 
@@ -149,6 +154,7 @@ u8 HSNAKE_u8Update(u8 A_u8Key)
         {
             GameOver = 1;
             HTFT_vDrawString(22, 140, "GAME OVER!", ST7735_RED, ST7735_BLACK);
+            System_vUpdateSnakeScore(Score);
             return SNAKE_STATE_CONTINUE;
         }
     }

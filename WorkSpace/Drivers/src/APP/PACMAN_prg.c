@@ -17,6 +17,8 @@
 #define OFFSET_X       12
 #define OFFSET_Y       30
 
+extern void System_vUpdatePacmanScore(u16 A_u16Score);
+
 /* 1 = Wall, 0 = Dot, 2 = Empty */
 static const u8 MapTemplate[MAP_SIZE][MAP_SIZE] = {
     {1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -137,6 +139,7 @@ u8 HPACMAN_u8Update(u8 A_u8Key)
     {
         GameOver = 1;
         HTFT_vDrawString(40, 140, "YOU WIN!", ST7735_YELLOW, ST7735_BLACK);
+        System_vUpdatePacmanScore(Score);
         return PACMAN_STATE_CONTINUE;
     }
 
@@ -181,6 +184,7 @@ u8 HPACMAN_u8Update(u8 A_u8Key)
         GameOver = 1;
         DrawBlock(PacX, PacY, ST7735_RED); // Ghost eats Pacman
         HTFT_vDrawString(30, 140, "GAME OVER!", ST7735_RED, ST7735_BLACK);
+        System_vUpdatePacmanScore(Score);
     }
 
     return PACMAN_STATE_CONTINUE;
