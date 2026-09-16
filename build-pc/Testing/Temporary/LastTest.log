@@ -1,0 +1,50 @@
+Start testing: Sep 16 13:08 Egypt Daylight Time
+----------------------------------------------------------
+1/2 Testing: pacman_movement_test
+1/2 Test: pacman_movement_test
+Command: "D:/Pac-Man (C language)/Pac-Man-C-language-/build-pc/pacman_movement_test.exe"
+Directory: D:/Pac-Man (C language)/Pac-Man-C-language-/build-pc
+"pacman_movement_test" start time: Sep 16 13:08 Egypt Daylight Time
+Output:
+----------------------------------------------------------
+movement tests passed
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"pacman_movement_test" end time: Sep 16 13:08 Egypt Daylight Time
+"pacman_movement_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/2 Testing: pacman_turn_buffer_test
+2/2 Test: pacman_turn_buffer_test
+Command: "D:/Pac-Man (C language)/Pac-Man-C-language-/build-pc/pacman_turn_buffer_test.exe"
+Directory: D:/Pac-Man (C language)/Pac-Man-C-language-/build-pc
+"pacman_turn_buffer_test" start time: Sep 16 13:08 Egypt Daylight Time
+Output:
+----------------------------------------------------------
+turn requested while blocked is applied at the first opening
+  [PASS] kept moving right through column 14
+  [PASS] request still queued after column 14
+  [PASS] kept moving right into column 15
+  [PASS] turned up as soon as it was legal
+  [PASS] request cleared after being applied
+turn requested at an opening is applied immediately
+  [PASS] setup placed Pac-Man at (23,12)
+  [PASS] turned up on the same tick
+instant reversal still works
+  [PASS] moved right to column 14
+  [PASS] reversed back to column 13
+with no request Pac-Man keeps going until a wall
+  [PASS] stopped against the wall at column 6
+
+turn buffering tests passed
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"pacman_turn_buffer_test" end time: Sep 16 13:08 Egypt Daylight Time
+"pacman_turn_buffer_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Sep 16 13:08 Egypt Daylight Time

@@ -1,7 +1,0 @@
-#include "../../LIB/STD_TYPES.h"
-#include "../../LIB/BIT_MATH.h"
-
-#include "DMA_int.h"
-#include "DMA_prv.h"
-
-

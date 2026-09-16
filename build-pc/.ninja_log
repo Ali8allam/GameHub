@@ -1,0 +1,15 @@
+# ninja log v6
+57	623	8112565088221033	CMakeFiles/pacman.dir/src/main.c.obj	a1f5867b6225a152
+78	756	8112565088430579	CMakeFiles/pacman_movement_test.dir/tests/test_movement.c.obj	b4386f6258328b1e
+131	762	8112565088958870	CMakeFiles/stm32_led_test.dir/src/APP/led_test.c.obj	79679e8e9991c304
+69	775	8112565088340597	CMakeFiles/pacman_movement_test.dir/src/game.c.obj	7457ea4d4619f88d
+39	799	8112565088040547	CMakeFiles/pacman.dir/src/game.c.obj	4c94224fecc78513
+143	831	8112565089078839	CMakeFiles/stm32_led_test.dir/src/MCAL/RCC/RCC_prg.c.obj	8420a006b2c71a8b
+115	856	8112565088800210	CMakeFiles/pacman_turn_buffer_test.dir/tests/test_turn_buffer.c.obj	890c11f636ec7e32
+153	893	8112565089178864	CMakeFiles/stm32_led_test.dir/src/MCAL/GPIO/GPIO_prg.c.obj	d53a92e66c31a055
+91	927	8112565088560236	CMakeFiles/pacman_turn_buffer_test.dir/src/game.c.obj	8129b60046e043da
+775	1302	8112565095400974	pacman_movement_test.exe	d1ed8642bee878f6
+894	1586	8112565096582355	stm32_led_test.exe	b0bb2986fab1444d
+927	1593	8112565096912331	pacman_turn_buffer_test.exe	f4a68575f60d0f5d
+47	5146	8112565088110544	CMakeFiles/pacman.dir/src/console.c.obj	16824c1fcef1ff94
+5150	5413	8112565139146830	pacman.exe	45db75dc542d7f5c

@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete resource &apos;Drivers/src/MCAL/EXTI/EXTI_prv.h&apos;" deleteContents="false" description="Delete resource &apos;Drivers/src/MCAL/EXTI/EXTI_prv.h&apos;" element1="/Drivers/src/MCAL/EXTI/EXTI_prv.h" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1787478126300"/>
-</session>
