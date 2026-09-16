@@ -60,8 +60,6 @@ static u8  g_u8PinDigitCount = 0;
 /* Periodic Save Flag for Safe Execution Outside Interrupts */
 static volatile u8 g_u8SaveToFlashFlag = 0;
 
-/* Function Declarations */
-
 /* Global system interface functions for game drivers */
 void System_vAddXOWin(void)
 {
@@ -93,11 +91,11 @@ void System_vUpdatePacmanScore(u16 A_u16Score)
     }
 }
 
-
 void SaveSystemDataToFlash(void);
 void LoadSystemDataFromFlash(void);
 void Timer1Sec_Callback(void);
 void DrawMenu(void);
+void DrawMenuTime(void);
 void DrawScoresScreen(void);
 void DrawParentalPinAuthScreen(void);
 void DrawParentalControlScreen(void);
@@ -192,6 +190,8 @@ int main(void)
     HTFT_vInit();
     HIR_vInit();
 
+    static u16 u16LastRemainingSec = 0xFFFF;
+
     if (g_sSysData.system_locked == 1 || (g_sSysData.max_play_time_mins > 0 && g_sSysData.remaining_time_sec == 0))
     {
         CurrentState = STATE_LOCKED_SCREEN;
@@ -202,6 +202,7 @@ int main(void)
     {
         HTFT_vFillBackgroundColor(ST7735_BLACK);
         DrawMenu();
+        u16LastRemainingSec = g_sSysData.remaining_time_sec;
     }
 
     while (1)
@@ -245,6 +246,7 @@ int main(void)
                         CurrentState = STATE_MAIN_MENU;
                         HTFT_vFillBackgroundColor(ST7735_BLACK);
                         DrawMenu();
+                        u16LastRemainingSec = g_sSysData.remaining_time_sec;
                     }
                     else
                     {
@@ -258,6 +260,13 @@ int main(void)
         }
         else if (CurrentState == STATE_MAIN_MENU)
         {
+            /* Live 1-Second Timer Refresh without flickering the menu items */
+            if (g_sSysData.remaining_time_sec != u16LastRemainingSec)
+            {
+                u16LastRemainingSec = g_sSysData.remaining_time_sec;
+                DrawMenuTime();
+            }
+
             if (Key != IR_KEY_NONE)
             {
                 if (Key == IR_NAV_UP || Key == IR_KEY_2)
@@ -310,6 +319,7 @@ int main(void)
                 CurrentState = STATE_MAIN_MENU;
                 HTFT_vFillBackgroundColor(ST7735_BLACK);
                 DrawMenu();
+                u16LastRemainingSec = g_sSysData.remaining_time_sec;
             }
             else
             {
@@ -367,16 +377,17 @@ int main(void)
                     g_sSysData.max_play_time_mins = newLimitMins;
                     g_sSysData.remaining_time_sec = newLimitMins * 60;
                     g_sSysData.system_locked = 0;
-                    SaveSystemDataToFlash(); // Save setting selection instantly
+                    SaveSystemDataToFlash();
                     DrawParentalControlScreen();
                 }
 
                 if (Key == IR_NAV_EXIT || Key == IR_KEY_MODE || Key == IR_NAV_OK)
                 {
-                    SaveSystemDataToFlash(); // Save state when leaving Parental Control
+                    SaveSystemDataToFlash();
                     CurrentState = STATE_MAIN_MENU;
                     HTFT_vFillBackgroundColor(ST7735_BLACK);
                     DrawMenu();
+                    u16LastRemainingSec = g_sSysData.remaining_time_sec;
                 }
             }
         }
@@ -391,6 +402,7 @@ int main(void)
                     CurrentState = STATE_MAIN_MENU;
                     HTFT_vFillBackgroundColor(ST7735_BLACK);
                     DrawMenu();
+                    u16LastRemainingSec = g_sSysData.remaining_time_sec;
                 }
             }
         }
@@ -403,6 +415,7 @@ int main(void)
                 CurrentState = STATE_MAIN_MENU;
                 HTFT_vFillBackgroundColor(ST7735_BLACK);
                 DrawMenu();
+                u16LastRemainingSec = g_sSysData.remaining_time_sec;
             }
             Software_vDelayMs(120);
         }
@@ -415,6 +428,7 @@ int main(void)
                 CurrentState = STATE_MAIN_MENU;
                 HTFT_vFillBackgroundColor(ST7735_BLACK);
                 DrawMenu();
+                u16LastRemainingSec = g_sSysData.remaining_time_sec;
             }
             Software_vDelayMs(250);
         }
@@ -425,8 +439,32 @@ int main(void)
                 CurrentState = STATE_MAIN_MENU;
                 HTFT_vFillBackgroundColor(ST7735_BLACK);
                 DrawMenu();
+                u16LastRemainingSec = g_sSysData.remaining_time_sec;
             }
         }
+    }
+}
+
+void DrawMenuTime(void)
+{
+    if (g_sSysData.max_play_time_mins == 0)
+    {
+        HTFT_vDrawString(12, 147, "TIME: UNLIMITED", ST7735_CYAN, ST7735_BLACK);
+    }
+    else
+    {
+        char timeStr[20] = "TIME: ";
+        u16 mins = g_sSysData.remaining_time_sec / 60;
+        u16 secs = g_sSysData.remaining_time_sec % 60;
+        timeStr[6]  = '0' + (mins / 10);
+        timeStr[7]  = '0' + (mins % 10);
+        timeStr[8]  = 'm';
+        timeStr[9]  = ' ';
+        timeStr[10] = '0' + (secs / 10);
+        timeStr[11] = '0' + (secs % 10);
+        timeStr[12] = 's';
+        timeStr[13] = '\0';
+        HTFT_vDrawString(12, 147, timeStr, ST7735_YELLOW, ST7735_BLACK);
     }
 }
 
@@ -460,26 +498,7 @@ void DrawMenu(void)
     }
 
     HTFT_vDrawRect(5, 142, 118, 1, ST7735_DARKGRAY);
-
-    if (g_sSysData.max_play_time_mins == 0)
-    {
-        HTFT_vDrawString(12, 147, "TIME: UNLIMITED", ST7735_CYAN, ST7735_BLACK);
-    }
-    else
-    {
-        char timeStr[20] = "TIME: ";
-        u16 mins = g_sSysData.remaining_time_sec / 60;
-        u16 secs = g_sSysData.remaining_time_sec % 60;
-        timeStr[6] = '0' + (mins / 10);
-        timeStr[7] = '0' + (mins % 10);
-        timeStr[8] = 'm';
-        timeStr[9] = ' ';
-        timeStr[10] = '0' + (secs / 10);
-        timeStr[11] = '0' + (secs % 10);
-        timeStr[12] = 's';
-        timeStr[13] = '\0';
-        HTFT_vDrawString(12, 147, timeStr, ST7735_YELLOW, ST7735_BLACK);
-    }
+    DrawMenuTime();
 }
 
 void DrawScoresScreen(void)
@@ -492,8 +511,8 @@ void DrawScoresScreen(void)
     char xoStr[20] = "WINS:00 LOSS:00";
     xoStr[5]  = '0' + (g_sSysData.xo_wins / 10);
     xoStr[6]  = '0' + (g_sSysData.xo_wins % 10);
-    xoStr[12] = '0' + (g_sSysData.xo_losses / 10);
-    xoStr[13] = '0' + (g_sSysData.xo_losses % 10);
+    xoStr[13] = '0' + (g_sSysData.xo_losses / 10); /* Fixed: Was 12 */
+    xoStr[14] = '0' + (g_sSysData.xo_losses % 10); /* Fixed: Was 13 */
     HTFT_vDrawString(15, 60, xoStr, ST7735_WHITE, ST7735_BLACK);
 
     HTFT_vDrawString(10, 80, "SNAKE BEST:", ST7735_CYAN, ST7735_BLACK);
