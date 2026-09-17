@@ -10,6 +10,7 @@
 #include "../HAL/IR/IR_int.h"
 
 #include "XO_int.h"
+#include "PACMAN_int.h"
 
 #define ST7735_BLACK   0x0000
 #define ST7735_WHITE   0xFFFF
@@ -18,13 +19,15 @@
 
 typedef enum {
     STATE_MAIN_MENU,
-    STATE_XO_GAME
+    STATE_XO_GAME,
+    STATE_PACMAN_GAME
 } SystemState_t;
 
 static SystemState_t CurrentState = STATE_MAIN_MENU;
 static u8 MenuSelection = 0;
 
 void DrawMenu(void);
+static void ReturnToMenu(void);
 
 int main(void)
 {
@@ -78,6 +81,11 @@ int main(void)
                         CurrentState = STATE_XO_GAME;
                         XO_vInit();
                     }
+                    else
+                    {
+                        CurrentState = STATE_PACMAN_GAME;
+                        PACMAN_vInit();
+                    }
                 }
             }
             else if (CurrentState == STATE_XO_GAME)
@@ -86,13 +94,36 @@ int main(void)
 
                 if (gameStatus == XO_STATE_EXIT)
                 {
-                    CurrentState = STATE_MAIN_MENU;
-                    HTFT_vFillBackgroundColor(ST7735_BLACK);
-                    DrawMenu();
+                    ReturnToMenu();
+                }
+            }
+            else if (CurrentState == STATE_PACMAN_GAME)
+            {
+                u8 gameStatus = PACMAN_u8HandleInput(Key);
+
+                if (gameStatus == PACMAN_STATE_EXIT)
+                {
+                    ReturnToMenu();
                 }
             }
         }
+
+        /* Pac-Man is not purely key driven: it needs a tick every pass to move
+         * the ghosts and repaint. The call also paces the loop at ~50 ms, and
+         * only ever runs while Pac-Man is the active state, so XO and the menu
+         * behave exactly as before. */
+        if (CurrentState == STATE_PACMAN_GAME)
+        {
+            PACMAN_vUpdate();
+        }
     }
+}
+
+static void ReturnToMenu(void)
+{
+    CurrentState = STATE_MAIN_MENU;
+    HTFT_vFillBackgroundColor(ST7735_BLACK);
+    DrawMenu();
 }
 
 void DrawMenu(void)
@@ -105,7 +136,7 @@ void DrawMenu(void)
         HTFT_vDrawString(15, 60, "  1. XO GAME", ST7735_WHITE, ST7735_BLACK);
 
     if (MenuSelection == 1)
-        HTFT_vDrawString(15, 80, "> 2. FUTURE GAME", ST7735_GREEN, ST7735_BLACK);
+        HTFT_vDrawString(15, 80, "> 2. PAC-MAN", ST7735_GREEN, ST7735_BLACK);
     else
-        HTFT_vDrawString(15, 80, "  2. FUTURE GAME", ST7735_WHITE, ST7735_BLACK);
+        HTFT_vDrawString(15, 80, "  2. PAC-MAN", ST7735_WHITE, ST7735_BLACK);
 }
